@@ -1,5 +1,4 @@
 package spacegame3;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import spacegame3.gamedata.GameScheme;
@@ -16,7 +15,8 @@ import java.nio.file.Paths;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public final class SpaceGame extends Application {
+public final class SpaceGame extends Application
+{
     private static final Logger LOG = Logger.getLogger(SpaceGame.class.getName());
 
     static {
@@ -31,6 +31,9 @@ public final class SpaceGame extends Application {
     }
 
 
+    /*
+        *Instance variables
+    */
     private final StartScreen startScreen;
     private final PlanetScreen planetScreen;
 
@@ -42,22 +45,33 @@ public final class SpaceGame extends Application {
 
     private boolean gameStarted;
 
-    public SpaceGame() {
+    /*
+     *SpaceGame constructor
+     *links startScreen and planetScreen to this context
+     */
+    public SpaceGame()
+    {
         startScreen = new StartScreen(this);
         planetScreen = new PlanetScreen(this);
         gameScheme = null;
         gameStarted = false;
     }
 
+    //game scheme getter
     public GameScheme getGameScheme() {
         return gameScheme;
     }
 
+    //game scheme setter
     public void setGameScheme(GameScheme gameScheme) {
         this.gameScheme = gameScheme;
         ImageLibrary.setStoryTellingPath(gameScheme.getStoryPath());
     }
 
+    /*
+        *starts up the the game
+        * creates title and scene + shows
+    */
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
@@ -80,29 +94,45 @@ public final class SpaceGame extends Application {
         stage.setScene(scene);
     }
 
+    /*
+        *main method - runs + launches game
+    */
     public static void main(String[] args) {
         launch(args);
     }
 
+    //getter for game started
     public boolean gameStarted() {
         return gameStarted;
     }
 
-
+    /*
+        *sets the planet screen to have landed on the parameter (a CelestialBody object)
+        *returns planet screen
+    */
     public SizableScene getPlanetScreen(CelestialBody planet) {
         planetScreen.setLandedOn(planet);
         return planetScreen;
     }
 
+    /*
+        *saves the current scene
+        *transfers to the start screen
+    */
     public void showStartScreen(SizableScene scene) {
         previousScene = scene;
         giveSceneTo(startScreen);
     }
 
+    //gets previous scene
     public SizableScene previousScene(){
         return previousScene;
     }
 
+    /*
+        *will send back to current screen if that is not null
+        * if it is null,
+    */
     public void sendToRightScene() {
         CelestialBody cb = gameScheme.getGameState().getPlanet();
         if (cb != null){
